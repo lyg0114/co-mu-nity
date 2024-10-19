@@ -1,6 +1,5 @@
-package com.comu.comunity.entity;
+package com.comu.comunity.model.entity;
 
-import com.comu.comunity.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
