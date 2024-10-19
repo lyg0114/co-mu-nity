@@ -1,4 +1,4 @@
 package com.comu.comunity.model.entity;
 
-public class Board {
+public class Board extends BaseEntity{
 }

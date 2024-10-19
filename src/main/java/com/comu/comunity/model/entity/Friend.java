@@ -1,4 +1,5 @@
 package com.comu.comunity.model.entity;
 
-public class Friend {
+public class Friend extends BaseEntity{
+
 }
