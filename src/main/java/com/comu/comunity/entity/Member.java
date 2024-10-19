@@ -1,5 +1,6 @@
 package com.comu.comunity.entity;
 
+import com.comu.comunity.model.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +31,6 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
-    private int follower = 0;
-
-    @Column
-    private int following = 0;
-
-    @Column
-    private boolean isFollowing = false;
 
     /* 게시글과의 연관관계 설정 예시
     @OneToMany(mappedBy = "member", cascade = CascadeType.All, orphanRemoval = true)
