@@ -3,12 +3,16 @@ package com.comu.comunity.auth;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.comu.comunity.model.entity.Member;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,7 +42,7 @@ public class JwtTokenProvider {
 			.compact();
 	}
 
-	public String getUser(String token) {
+	public String getEmailFromToken(String token) {
 		return Jwts.parser()
 			.setSigningKey(secretKey)
 			.parseClaimsJws(token)
@@ -58,12 +62,33 @@ public class JwtTokenProvider {
 		}
 	}
 
+	public String getEmail() {
+		HttpServletRequest request = getCurrentHttpRequest();  // 현재 요청 객체 가져오기
+		if (request != null) {
+			String bearerToken = request.getHeader("Authorization");
+			if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+				String token = extractJwtToken(bearerToken);
+				return getEmailFromToken(token);  // 토큰에서 이메일 추출
+			}
+		}
+		return null;
+	}
+
 	public String extractJwtToken(String tokenWithBearer) {
 		if (tokenWithBearer != null && tokenWithBearer.startsWith("Bearer ")) {
 			return tokenWithBearer.substring(7);
 		}
 
 		return tokenWithBearer;
+	}
+
+
+	private HttpServletRequest getCurrentHttpRequest() {
+		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+		if (requestAttributes instanceof ServletRequestAttributes) {
+			return ((ServletRequestAttributes)requestAttributes).getRequest();
+		}
+		return null;
 	}
 
 }

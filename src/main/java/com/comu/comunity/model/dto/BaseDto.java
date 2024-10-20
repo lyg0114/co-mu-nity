@@ -14,6 +14,4 @@ public class BaseDto {
 
 	private String email;
 
-	private String name;
-
 }
